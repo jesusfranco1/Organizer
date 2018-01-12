@@ -10,7 +10,7 @@ import time
 import operator
 
 mysql = MySQL()
-app = flask(__name__)
+app = Flask(__name__)
 app.secret_key = 'csisfun'
 
 '''Connect mysql database to app'''
@@ -113,7 +113,6 @@ def unauthorized_handler():
 def register():
 	return render_template('register.html', supress='True')
 
-
 @app.route("/register", methods=['POST'])
 def register_user():
 	try:
@@ -127,7 +126,7 @@ def register_user():
 	cursor = conn.cursor()
 	test =  isEmailUnique(email)
 	if test:
-		cursor.execute("INSERT INTO Users (email, firstname, lastname, date_of_birth, hometown, gender, password) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')".format(email, firstname, lastname, date_of_birth, hometown, gender, password))
+		cursor.execute("INSERT INTO Users (email, firstname, lastname, password) VALUES ('{0}', '{1}', '{2}', '{3}')".format(email, firstname, lastname, password))
 		conn.commit()
 		#log user in
 		user = User()
@@ -146,11 +145,49 @@ def isEmailUnique(email):
 		return False
 	else:
 		return True
+
 def getUserIdFromEmail(email):
 	cursor = conn.cursor()
 	cursor.execute("SELECT user_id  FROM Users WHERE email = '{0}'".format(email))
 	return cursor.fetchone()[0]
 
+def get_user_name(email):
+	cursor = conn.cursor()
+	cursor.execute("SELECT firstname FROM Users WHERE email = '{0}'".format(email))
+	return cursor.fetchone()[0]
+
+@app.route('/maps')
+@flask_login.login_required
+def protected():
+	uid = getUserIdFromEmail(flask_login.current_user.id)
+	name = get_user_name(flask_login.current_user.id)
+	coordinates = leafify(flask_login.current_user.id)
+	return render_template('maps.html', name=name, message="Here's your profile", user=uid)
+
+@app.route('/addLocation')
+@flask_login.login_required
+def add_location():
+	email = flask_login.current_user.id
+	name = get_user_name(email)
+	return render_template("addtomap.html", name=name,email=email)
+
+@app.route('/add_a_location', methods=['POST'])
+@flask_login.login_required
+def add_a_location():
+	locationname = request.form.get('locationname')
+	address = request.form.get('house_num')
+	street = request.form.get('street')
+	city = request.form.get('city')
+	zipcode = request.form.get('zipcode')
+	user = flask_login.current_user.id
+	cursor = conn.cursor()
+	cursor.execute("INSERT INTO locations (user, locationname, city, street, house_num, zipcode) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(user, locationname,city,street,house_num,zipcode))
+	conn.commit()
+	return redirect(url_for('protected'))
+
+def leafify(email):
+	return 0
+	
 '''This is the home page. When the application is called via command line, this function is called'''
 @app.route("/")
 def hello():

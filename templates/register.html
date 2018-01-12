@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<head>
+    <title>Create an account!</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<!--
+{%if not supress%}
+<h1> Email already in use! Use another one or <a href="/login">login</a></h1>
+{% endif %}
+-->
+    <body>
+        <div class="container">
+            <div class="container-fluid bg-1 text-center"> 
+
+                <div class= "col-md-12">
+                    {%if not supress%}
+                        <h1> Email already in use! Use another one or <a href="/login">login</a></h1>
+                    {% endif %}
+                    <h1>Enter your information below</h1>
+                </div>
+            </div>
+            <form method="post" action="{{ url_for('register_user') }}">
+            <label for="email">Enter your email:</label>
+            <input type="email" name="email" /><br />
+            <label for="password">Enter password:</label>
+            <input type="password" name="password" /><br />
+            <label for="firstname">Enter your first name:</label>
+            <input type="text" name="firstname" /><br />
+            <label for="lastname">Enter your last name:</label>
+            <input type="text" name="lastname" /><br />
+        <input type="submit" />                       
+    </form>    
+    <a href='/'>Home</a>            
+</body>
+<style>
+    
+</style>
+
+

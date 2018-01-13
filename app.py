@@ -162,7 +162,7 @@ def protected():
 	uid = getUserIdFromEmail(flask_login.current_user.id)
 	name = get_user_name(flask_login.current_user.id)
 	coordinates = leafify(flask_login.current_user.id)
-	return render_template('maps.html', name=name, message="Here's your profile", user=uid)
+	return render_template('maps.html', name=name, message="Here's your profile", user=uid, coordinates=coordinates)
 
 @app.route('/addLocation')
 @flask_login.login_required

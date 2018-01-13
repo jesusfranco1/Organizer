@@ -6,5 +6,7 @@ Make sure Flask is installed. You also need geocoder which I included the comman
 
 To run this application: 
 $ pip install geocoder
+
 $ export FLASK_APP=app.py
+
 $ flask run

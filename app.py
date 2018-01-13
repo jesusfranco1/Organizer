@@ -181,7 +181,7 @@ def add_a_location():
 	zipcode = request.form.get('zipcode')
 	user = flask_login.current_user.id
 	cursor = conn.cursor()
-	cursor.execute("INSERT INTO locations (user, locationname, city, street, house_num, zipcode) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(user, locationname,city,street,house_num,zipcode))
+	cursor.execute("INSERT INTO locations (user, locationname, city, street, house_num, zipcode) VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')".format(user, locationname,city,street,address,zipcode))
 	conn.commit()
 	return redirect(url_for('protected'))
 
@@ -199,7 +199,7 @@ def leafify(email):
 		string = ''
 		string = str([i[3]]) + ',' + str(i[2]) + ',' + str(i[1])
 		g = geocoder.google(string)
-		coordinates_array.append(g)
+		coordinates_array.append(g.latlng)
 	return coordinates_array
 	
 '''This is the home page. When the application is called via command line, this function is called'''

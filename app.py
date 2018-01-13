@@ -185,8 +185,22 @@ def add_a_location():
 	conn.commit()
 	return redirect(url_for('protected'))
 
+'''Gather location data from the database for the specific user and return the coordinates.
+	What I use here is geocoder library for python found here: http://geocoder.readthedocs.io/api.html#install
+'''
 def leafify(email):
-	return 0
+	email = email
+	cursor = conn.cursor()
+	cursor.execute("SELECT locationname, city, street, house_num, zipcode FROM locations WHERE user = '{0}'".format(email))
+	location = cursor.fetchall()
+	coordinates_array = []
+	for i in location:
+		#im not sure if its necessary to initialize but it does not hurt to do so just to be safe.
+		string = ''
+		string = str([i[3]]) + ',' + str(i[2]) + ',' + str(i[1])
+		g = geocoder.google(string)
+		coordinates_array.append(g)
+	return coordinates_array
 	
 '''This is the home page. When the application is called via command line, this function is called'''
 @app.route("/")

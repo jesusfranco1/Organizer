@@ -4,7 +4,8 @@ entered manualy for now until I find a way to track locations from ones cellular
 
 Make sure Flask is installed. You also need geocoder which I included the command for its instalation bellow.
 
-To run this application: 
+To run this application:
+ 
 $ pip install geocoder
 
 $ export FLASK_APP=app.py

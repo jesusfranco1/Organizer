@@ -199,7 +199,9 @@ def leafify(email):
 		string = ''
 		string = str([i[3]]) + ',' + str(i[2]) + ',' + str(i[1])
 		g = geocoder.google(string)
-		coordinates_array.append(g.latlng)
+		stuff = g.latlng
+		if stuff != "None":
+			coordinates_array.append(g.latlng)
 	return coordinates_array
 	
 '''This is the home page. When the application is called via command line, this function is called'''
